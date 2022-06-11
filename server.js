@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const uniqid = require('uniqid');
 
+//db
+var notes = require('./db/db.json');
+
 
 //port
 const PORT = process.env.PORT || 3001;
@@ -18,22 +21,23 @@ app.use(express.static('public'));
 
 //API ROUTING
 app.get("/api/notes", function (req, res) {
-    fs.readFileSync("./db/db.json", "utf8", function (err, data) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      res.json(data);
-    });
+   res.json(notes);
   });
 
 
 app.post("/api/notes", (req, res) => {
-    var newNote = req.body;
-    var noteArray = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-    newNote.id = uniqid();
-    noteArray.push(newNote);
-    fs.writeFile("./db/db.json", JSON.stringify(noteArray));
+    const newNote = {
+        title: req.body.title,
+        text: req.body.text,
+        id: uniqid()
+    }; 
+    notes.push(newNote);
+    res.json(notes);
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+    notes = notes.filter(note => note.id !== req.params.id);
+    res.json(notes);
 })
 
 
