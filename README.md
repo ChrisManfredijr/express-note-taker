@@ -16,8 +16,8 @@
 
 an application that allows you to store and retrieve notes from a back-end JSON db.
 
-### deployed linK:
-
+### deployed link:
+https://tranquil-meadow-03693.herokuapp.com/
 
 ## Built with 
 - HTML
